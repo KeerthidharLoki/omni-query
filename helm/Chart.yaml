@@ -1,0 +1,6 @@
+apiVersion: v2
+name: omni-query
+description: Multimodal RAG for Long-Document Intelligence
+type: application
+version: 3.1.0
+appVersion: "3.1.0"

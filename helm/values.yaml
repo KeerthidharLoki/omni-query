@@ -1,0 +1,63 @@
+replicaCount:
+  api: 2
+  ui: 1
+
+image:
+  api:
+    repository: omni-query-api
+    tag: "3.1.0"
+    pullPolicy: IfNotPresent
+  ui:
+    repository: omni-query-ui
+    tag: "3.1.0"
+    pullPolicy: IfNotPresent
+
+service:
+  api:
+    type: ClusterIP
+    port: 8000
+  ui:
+    type: ClusterIP
+    port: 8501
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: omni-query.local
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: api
+        - path: /
+          pathType: Prefix
+          service: ui
+
+hpa:
+  api:
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+
+secrets:
+  geminiApiKey: ""
+  qdrantApiKey: ""
+  qdrantUrl: ""
+  langfusePublicKey: ""
+  langfuseSecretKey: ""
+
+resources:
+  api:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "2000m"
+      memory: "2Gi"
+  ui:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"

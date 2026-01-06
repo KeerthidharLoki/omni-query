@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omni-query-config
+  namespace: omni-query
+data:
+  DEV_FILE: "data/dev_15.jsonl"
+  EVAL_FILE: "data/evaluation_15.jsonl"
+  IMAGES_DIR: "data/raw/images"
+  LANGFUSE_HOST: "https://cloud.langfuse.com"

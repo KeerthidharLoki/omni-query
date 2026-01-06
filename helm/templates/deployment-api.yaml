@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omni-query-api
+  namespace: omni-query
+spec:
+  replicas: {{ .Values.replicaCount.api }}
+  selector:
+    matchLabels:
+      app: omni-query-api
+  template:
+    metadata:
+      labels:
+        app: omni-query-api
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.image.api.repository }}:{{ .Values.image.api.tag }}"
+          imagePullPolicy: {{ .Values.image.api.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: omni-query-secrets
+            - configMapRef:
+                name: omni-query-config
+          resources:
+            requests:
+              cpu: {{ .Values.resources.api.requests.cpu }}
+              memory: {{ .Values.resources.api.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.api.limits.cpu }}
+              memory: {{ .Values.resources.api.limits.memory }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10

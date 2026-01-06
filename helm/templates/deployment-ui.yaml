@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omni-query-ui
+  namespace: omni-query
+spec:
+  replicas: {{ .Values.replicaCount.ui }}
+  selector:
+    matchLabels:
+      app: omni-query-ui
+  template:
+    metadata:
+      labels:
+        app: omni-query-ui
+    spec:
+      containers:
+        - name: ui
+          image: "{{ .Values.image.ui.repository }}:{{ .Values.image.ui.tag }}"
+          imagePullPolicy: {{ .Values.image.ui.pullPolicy }}
+          ports:
+            - containerPort: 8501
+          env:
+            - name: API_BASE
+              value: "http://omni-query-api:8000"
+          resources:
+            requests:
+              cpu: {{ .Values.resources.ui.requests.cpu }}
+              memory: {{ .Values.resources.ui.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.ui.limits.cpu }}
+              memory: {{ .Values.resources.ui.limits.memory }}

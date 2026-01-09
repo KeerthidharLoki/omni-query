@@ -6,22 +6,6 @@ Multimodal RAG system for long-document intelligence over the MMDocRAG benchmark
 
 ---
 
-## Demo Mode
-
-By default the API runs in **demo mode** (`DEMO_MODE=true`). All responses include a `"demo_mode"` field so callers always know which path was taken.
-
-| Mode | Behavior | External deps required |
-|---|---|---|
-| `DEMO_MODE=true` (default) | Fuzzy match against pre-indexed MMDocRAG records, realistic pipeline latency | None |
-| `DEMO_MODE=false` | Live pipeline: Qdrant → cross-encoder reranker → Gemini 2.5 Flash | `GEMINI_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY` |
-
-```bash
-# Run with real retrieval pipeline
-DEMO_MODE=false python run_api.py
-```
-
----
-
 ## Screenshots
 
 ### Landing
